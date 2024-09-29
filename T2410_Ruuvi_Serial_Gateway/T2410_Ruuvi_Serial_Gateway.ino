@@ -1,8 +1,19 @@
-/*
-  
+/******************************************************************************
+  T2410_Ruuvi_Serial_Gateway
+  - MCU:    ESP32 (Dev kit)
+  - HW:     -
+  - Author: Tom Höglund  infrapale@gmail.com
+  - Github: https://github.com/infrapale/T2410_Ruuvi_AIO_Gateway.git
+*******************************************************************************  
+This application is scanning BLE for finding Ruuvi sensors defined in a list.
+- Scan BLE advertisements
+- Save sensor values when a defined Ruuvi sensor was found
+- Print sensor values one sensor at a time
+- Apply a delay between printouts
+*******************************************************************************  
    Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleScan.cpp
    Ported to Arduino ESP32 by Evandro Copercini
-*/
+******************************************************************************/
 
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -26,9 +37,8 @@ RuuviTag      ruuvi_tag;
 main_ctrl_st  main_ctrl;
 BLEScan       *pBLEScan;
 
-uint8_t pl[255];
-
-void print_ruuvi_task(void);
+// Function Prototypes
+void print_ruuvi_values(void);
 
 class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks 
 {
@@ -111,7 +121,7 @@ void loop()
             if (millis() > main_ctrl.next_print_ms)
             {
                 main_ctrl.next_print_ms = millis() + PRINT_INTERVAL;
-                print_ruuvi_task();
+                print_ruuvi_values();
             }
             main_ctrl.state = 10;
             break;
@@ -121,7 +131,7 @@ void loop()
     }
 }
 
-void print_ruuvi_task(void)
+void print_ruuvi_values(void)
 {
     // Serial.printf("print_ruuvi_task: %d \n ", main_ctrl.sensor_indx);
     if( ruuvi_tag.get_updated(main_ctrl.sensor_indx))
