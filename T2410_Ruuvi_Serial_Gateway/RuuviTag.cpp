@@ -5,8 +5,6 @@
 
 
 
-
-
 RuuviTag::RuuviTag(void)
 {
     memset(ruuvi,0x00,sizeof(ruuvi));

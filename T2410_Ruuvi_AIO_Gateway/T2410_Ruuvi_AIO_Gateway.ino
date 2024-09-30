@@ -1,8 +1,20 @@
-/*
-  
+/******************************************************************************
+  T2410_Ruuvi_AIO_Gateway
+  - MCU:    ESP32 (Dev kit)
+  - HW:     -
+  - Author: Tom Höglund  infrapale@gmail.com
+  - Github: https://github.com/infrapale/T2410_Ruuvi_AIO_Gateway.git
+*******************************************************************************  
+This application is scanning BLE for finding Ruuvi sensors defined in a list.
+- Scan BLE advertisements
+- Save sensor values when a defined Ruuvi sensor was found
+- Print sensor values one sensor at a time
+- Apply a delay between printouts
+- Publish sensor values to Adafruit IO as defined
+*******************************************************************************  
    Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleScan.cpp
    Ported to Arduino ESP32 by Evandro Copercini
-*/
+******************************************************************************/
 
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -11,6 +23,7 @@
 
 #include "main.h"
 #include "RuuviTag.h"
+#include "sensor.h"
 #include "helpers.h"
 
 #define CAPTION_LEN               40      ///< Length of value name
@@ -26,9 +39,8 @@ RuuviTag      ruuvi_tag;
 main_ctrl_st  main_ctrl;
 BLEScan       *pBLEScan;
 
-uint8_t pl[255];
+// Function Prototypes
 
-void print_ruuvi_task(void);
 
 class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks 
 {
@@ -83,11 +95,8 @@ void setup()
     pBLEScan->setActiveScan(true);  //active scan uses more power, but get results faster
     pBLEScan->setInterval(100);
     pBLEScan->setWindow(99);  // less or equal setInterval value
+    sensor_initialize();
 
-    /// Define ruuvi tag data
-    ruuvi_tag.add(String("e6:2c:8d:db:22:35"),"Jaakaappi yla");
-    ruuvi_tag.add(String("ea:78:e2:12:36:f8"),"Jaakaappi keski");
-    ruuvi_tag.add(String("ed:9a:ab:c6:30:72"),"Jaakaappi vihannes");    
 }
 
 void loop() 
@@ -111,7 +120,7 @@ void loop()
             if (millis() > main_ctrl.next_print_ms)
             {
                 main_ctrl.next_print_ms = millis() + PRINT_INTERVAL;
-                print_ruuvi_task();
+                sensor_print_values();
             }
             main_ctrl.state = 10;
             break;
@@ -121,17 +130,4 @@ void loop()
     }
 }
 
-void print_ruuvi_task(void)
-{
-    // Serial.printf("print_ruuvi_task: %d \n ", main_ctrl.sensor_indx);
-    if( ruuvi_tag.get_updated(main_ctrl.sensor_indx))
-    {
-        Serial.printf("%-20s ", ruuvi_tag.get_location(main_ctrl.sensor_indx));
-        Serial.printf("Temperature: %6.1f ", ruuvi_tag.get_temperature(main_ctrl.sensor_indx));
-        Serial.printf("Humidity: %6.1f\n", ruuvi_tag.get_humidity(main_ctrl.sensor_indx));
-        ruuvi_tag.clr_updated(main_ctrl.sensor_indx);
-    }
-    main_ctrl.sensor_indx++;
-    if (main_ctrl.sensor_indx >= MAX_NBR_RUUVI_TAG) main_ctrl.sensor_indx = 0;
-}
         
