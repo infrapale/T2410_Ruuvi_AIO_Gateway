@@ -19,7 +19,7 @@ This application is scanning BLE for finding Ruuvi sensors defined in a list.
 #include <BLEUtils.h>
 #include <BLEScan.h>
 #include <BLEAdvertisedDevice.h>
-#include <WiFi.h>
+
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
@@ -27,20 +27,15 @@ This application is scanning BLE for finding Ruuvi sensors defined in a list.
 #include "main.h"
 #include "RuuviTag.h"
 #include "helpers.h"
-/// SSID Definitions
-// #define  VILLA_ASTRID
-// #define  H_MOKKULA
-#define PIRPANA
-#include "secrets.h"
 
-#define NBR_SENSORS               3       ///< Number of sensor values
-#define CAPTION_LEN               40      ///< Length of value name
-#define MAC_ADDR_LEN              18      ///< Length of the BLE MAC address string
-#define MQTT_UPDATE_INTERVAL_ms   60000   ///< MQTT update interval, one value per time
-#define PRINT_INTERVAL            10000
-#define BLE_SCAN_INTERVAL         20000
-#define BLE_SCAN_TIME_SEC         5
-#define WDT_TIMEOUT               10
+
+typedef enum
+{
+    VALUE_TYPE_UNDEFINED = 0,
+    VALUE_TYPE_FLOAT,
+} value_type_et;
+
+
 
 typedef struct
 {
@@ -54,30 +49,14 @@ typedef struct
 } sensor_st;
 
 
-const char* ssid     = WIFI_SSID;            //Main Router      
-const char* password = WIFI_PASS;            //Main Router Password
 
 
-
-WiFiClient client;
+// WiFiClient client;
 
 
 RuuviTag      ruuvi_tag;
 main_ctrl_st  main_ctrl;
 BLEScan       *pBLEScan;
-
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, IO_USERNAME, IO_KEY);
-Adafruit_MQTT_Publish ruuvi_e6_temp  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-e6-temp");
-Adafruit_MQTT_Publish ruuvi_ea_temp  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-ea-temp");
-Adafruit_MQTT_Publish ruuvi_ed_temp  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-ed-temp");
-
-sensor_st sensor[NBR_SENSORS]= 
-{
-    { &ruuvi_e6_temp, "Ruuvi E6:2C:8D:DB:22:35 Temp", VALUE_TYPE_FLOAT, NULL,NULL,0.0,false}, 
-    { &ruuvi_ea_temp, "Ruuvi EA:78:E2:12:36:F8 Temp", VALUE_TYPE_FLOAT, NULL,NULL,0.0,false}, 
-    { &ruuvi_ed_temp, "Ruuvi ED:9A:AB:C6:30:72 Temp", VALUE_TYPE_FLOAT, NULL,NULL,0.0,false}, 
-};
-
 
 // Function Prototypes
 void print_ruuvi_values(void);
@@ -137,9 +116,11 @@ void setup()
     pBLEScan->setWindow(99);  // less or equal setInterval value
 
     /// Define ruuvi tag data
-    ruuvi_tag.add(String("e6:2c:8d:db:22:35"),"Jaakaappi yla");
-    ruuvi_tag.add(String("ea:78:e2:12:36:f8"),"Jaakaappi keski");
-    ruuvi_tag.add(String("ed:9a:ab:c6:30:72"),"Jaakaappi vihannes");    
+    ruuvi_tag.add(String("e6:2c:8d:db:22:35"),"Skruv e6");
+    ruuvi_tag.add(String("ea:78:e2:12:36:f8"),"Skruv ea");
+    ruuvi_tag.add(String("ed:9a:ab:c6:30:72"),"Skruv ed");    
+
+    aio_mqtt_initialize();
 }
 
 void loop() 

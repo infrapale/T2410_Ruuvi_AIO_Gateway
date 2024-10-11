@@ -1,7 +1,7 @@
 #ifndef __RUUVI_TAG_H__
 #define __RUUVI_TAG_H__
 
-#define  MAX_NBR_RUUVI_TAG  4
+#define  MAX_NBR_RUUVI_TAG  8
 #define  RUUVI_LOCATION_LEN 20
 
 typedef struct
@@ -29,6 +29,8 @@ class RuuviTag
         RuuviTag(void);
         int8_t  add(String addr, const char *loc);
         String  *get_addr(uint8_t indx);
+        uint8_t get_index(String mac_addr)
+        ruuvi_tag_st *get_data_ptr(String mac_addr)
         bool    is_a_defined_ruuvi(String mac_addr);
         float   get_temperature(uint8_t indx);
         float   get_humidity(uint8_t indx);

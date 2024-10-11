@@ -4,7 +4,6 @@
 #include "helpers.h"
 
 
-
 RuuviTag::RuuviTag(void)
 {
     memset(ruuvi,0x00,sizeof(ruuvi));
@@ -54,17 +53,30 @@ String *RuuviTag::get_addr(uint8_t indx)
     }
 }
 
-bool RuuviTag::is_a_defined_ruuvi(String mac_addr)
+uint8_t RuuviTag::get_index(String mac_addr)
 {
     bool is_defined = false;
-    uint8_t indx = 0;
+    uint8_t indx = 255;
     while((indx < nbr_of) && !is_defined)
     {
         if (mac_addr.compareTo(ruuvi[indx].mac_addr) == 0) is_defined = true;
         indx++;
     }
-    return is_defined;
+    return indx;
 }
+
+ruuvi_tag_st *RuuviTag::get_data_ptr(String mac_addr)
+{
+    uint8_i tag_indx =  get_index(mac_addr);
+    if (tag_indx <= nbr_of) return (&ruuvi[tag_indx]);
+    else return (NULL);
+}
+
+bool RuuviTag::is_a_defined_ruuvi(String mac_addr)
+{
+    return = get_index(mac_addr) <= nbr_of;
+}
+
 
 char *RuuviTag::get_location(uint8_t indx)
 {
