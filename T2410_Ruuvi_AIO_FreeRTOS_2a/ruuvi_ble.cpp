@@ -47,6 +47,7 @@ class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks
               Serial.print(" : ");
               Serial.printf("Length & data: %d ", strManufacturerData.length());
               Serial.print(RawData);
+              Serial.printf("  RSSI= %d",advertisedDevice.getRSSI());
               Serial.printf("\n");
  
           }
@@ -71,8 +72,7 @@ void ruuvi_ble_initialize(void)
 void ruuvi_scan_task( void *pvParameters)
 {
     static uint8_t state = 0;
-    BaseType_t rc;
-    esp_err_t er;
+    //esp_err_t er;
     BLEScanResults *foundDevices;
     ruuvi_ble_initialize();
 
@@ -85,8 +85,6 @@ void ruuvi_scan_task( void *pvParameters)
                 state = 10;
                 break;
             case 10:
-                // rc = xSemaphoreTake(sema_radio, (TickType_t) 0 );
-                // if (rc == pdPASS) state= 30;
                 if (main_ctrl.radio_is_available)
                 {
                     main_ctrl.radio_is_available = false; 

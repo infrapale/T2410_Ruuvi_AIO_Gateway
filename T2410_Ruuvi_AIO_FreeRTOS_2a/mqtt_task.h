@@ -5,7 +5,7 @@
 #include "main.h"
 #include "ruuvi_tag.h"
 
-#define AIO_PUBL_NBR_OF     3
+#define AIO_PUBL_NBR_OF     5
 
 typedef enum
 {
@@ -13,7 +13,9 @@ typedef enum
     UNIT_HUMIDITY,
     UNIT_AIR_PRESSURE,
     UNIT_LIGHT,
-    UNIT_LDR
+    UNIT_LDR,
+    UNIT_RSSI,
+    UNIT_VOLTAGE
 } unit_et;
 
 typedef enum

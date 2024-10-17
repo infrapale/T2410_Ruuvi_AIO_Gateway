@@ -7,11 +7,9 @@
 //#define  H_MOKKULA
 #define PIRPANA
 
-#define NBR_SENSORS               3       ///< Number of sensor values
 #define CAPTION_LEN               40      ///< Length of value name
 #define MAC_ADDR_LEN              18      ///< Length of the BLE MAC address string
 #define BLE_VERBOSE               true
-#define BLE_SCAN_INTERVAL         20000
 #define BLE_SCAN_TIME_SEC         5
 
 // Adafruit IO

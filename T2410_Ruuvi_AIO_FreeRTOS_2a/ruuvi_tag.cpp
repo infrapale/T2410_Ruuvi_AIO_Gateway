@@ -120,6 +120,11 @@ float RuuviTag::get_humidity(uint8_t indx)
     return ruuvi[indx].humidity;
 }
 
+float RuuviTag::get_rssi(uint8_t indx)
+{
+    return (float)ruuvi[indx].rssi;
+}
+
 bool RuuviTag::get_updated(uint8_t indx)
 {
     return ruuvi[indx].updated;
@@ -143,11 +148,14 @@ void RuuviTag::decode_raw_data(String mac_addr, String raw_data, int rssi)
     {
         if(ruuvi[indx].mac_addr.indexOf(mac_addr)  >= 0 )
         {
+            ruuvi[indx].rssi = rssi;
             if(raw_data.substring(4, 6) == "03")
             {   
                 ruuvi[indx].temperature = hexadecimalToDecimal(raw_data.substring(8, 10));
                 ruuvi[indx].temp_fp = (float) ruuvi[indx].temperature + (float) hexadecimalToDecimal(raw_data.substring(10, 12)) / 100.0;
                 ruuvi[indx].humidity = hexadecimalToDecimal(raw_data.substring(6, 8));
+
+
                 //ruuvi[indx].pressure = hexadecimalToDecimal(raw_data.substring(12, 16))-50000;
         
                 //ax = hexadecimalToDecimal(raw_data.substring(18, 22));
@@ -162,7 +170,7 @@ void RuuviTag::decode_raw_data(String mac_addr, String raw_data, int rssi)
                 //ruuvi[indx].voltage = (int)((voltage_power & 0x0b1111111111100000) >> 5) + 1600;
                 //ruuvi[indx].power = (int)(voltage_power & 0x0b0000000000011111) - 40;
         
-                ruuvi[indx].rssi = rssi;
+                
         
                 //ruuvi[indx].movement = hexadecimalToDecimal(raw_data.substring(34, 36));
                 //ruuvi[indx].measurement = hexadecimalToDecimal(raw_data.substring(36, 40));
@@ -173,6 +181,8 @@ void RuuviTag::decode_raw_data(String mac_addr, String raw_data, int rssi)
                 ruuvi[indx].temperature = hexadecimalToDecimal(raw_data.substring(6, 10));
                 ruuvi[indx].temp_fp = (float) ruuvi[indx].temperature * 0.005;
                 ruuvi[indx].humidity = hexadecimalToDecimal(raw_data.substring(10, 14)) *0.000025;
+                uint16_t u16 = hexadecimalToDecimal(raw_data.substring(18, 20));
+                ruuvi[indx].voltage = float(u16 >> 5) +1.6;
                 ruuvi[indx].updated = true;        
             }
 

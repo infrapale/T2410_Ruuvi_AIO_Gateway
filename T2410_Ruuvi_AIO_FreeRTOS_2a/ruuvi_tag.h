@@ -7,20 +7,20 @@
 
 typedef struct
 {
-    String   mac_addr;
-    char     location[RUUVI_LOCATION_LEN];
-    float    temp_fp;
-    uint16_t temperature;
-    float    humidity;
-    uint16_t pressure;
-    int16_t  acc[3];
-    uint16_t voltage_power;
-    uint16_t voltage;
-    uint16_t power;
-    uint16_t rssi;
-    uint16_t movement;
-    uint16_t measurement;
-    bool     updated;
+    String    mac_addr;
+    char      location[RUUVI_LOCATION_LEN];
+    float     temp_fp;
+    uint16_t  temperature;
+    float     humidity;
+    uint16_t  pressure;
+    int16_t   acc[3];
+    uint16_t  voltage_power;
+    float     voltage;
+    uint16_t  power;
+    int16_t   rssi;
+    uint16_t  movement;
+    uint16_t  measurement;
+    bool      updated;
 } ruuvi_tag_st;
 
 
@@ -36,6 +36,7 @@ class RuuviTag
         bool    is_a_defined_ruuvi(String mac_addr);
         float   get_temperature(uint8_t indx);
         float   get_humidity(uint8_t indx);
+        float   get_rssi(uint8_t indx);
         char    *get_location(uint8_t indx);
         bool    get_updated(uint8_t indx);
         void    clr_updated(uint8_t indx);
