@@ -1,48 +1,33 @@
-#include "Arduino.h"
-#include "main.h"
-#include "atask.h"
 #include <WiFi.h>
-#include "wifi_sm.h"
-
-
-typedef struct
-{
-    bool is_connected;
-} wifi_sm_st;
-
-wifi_sm_st wifi_sm;
+#include "main.h"
+#include "secrets.h"
 
 const char* ssid     = WIFI_SSID;            //Main Router      
 const char* password = WIFI_PASS;            //Main Router Password
 
 
+WiFiClient client;
 
-//                                          123456789012345   ival  next  state  prev  cntr flag  call backup
-atask_st wifi_task_handle        =        {"WiFI SM       ", 1000,   0,     0,  255,    0,   1,  wifi_sm_task };
-
-
-void wifi_sm_initialize(void)
-{
-    wifi_sm.is_connected = false;
-}
+extern main_ctrl_st main_ctrl;
+extern SemaphoreHandle_t sema_radio;
 
 
-
-void wifi_sm_task( void){
+void wifi_task_code( void *pvParameters ){
     uint8_t state;
     int8_t  ret;
     uint8_t retries = 6;
-    BaseType_t rc;
+    BaseType_t rc = 0;
     esp_err_t er;
 
     state = 0;
     // er = esp_task_wdt_add(nullptr);
     // assert(er == ESP_OK);
     
+
     for (;;)
     {
-        //printf("WiFi state: %d\n", state);
-        switch(wifi_task_handle.state )
+        printf("WiFi state: %d\n", state);
+        switch(state)
         {
             case 0:   // initial
                 if (WiFi.status() != WL_CONNECTED){
@@ -56,14 +41,17 @@ void wifi_sm_task( void){
                 break;
             case 1:   // Check for the connection
                 if (WiFi.status() != WL_CONNECTED) {
-                    //digitalWrite(LED_YELLOW,LOW);
+                    digitalWrite(LED_YELLOW,LOW);
                     vTaskDelay(1000);
                     if (--retries == 0) state = 3;
                     else Serial.println("Waiting for WiFi"); 
                 }
                 else {
-                    // digitalWrite(LED_YELLOW,HIGH);
+                    digitalWrite(LED_YELLOW,HIGH);
                     Serial.println("Connected to WiFi");
+                    main_ctrl.wifi_is_connected = true;
+                    main_ctrl.radio_is_available = true;
+                    //rc = xSemaphoreGive(sema_radio); printf("wifi sema give = %d\n", rc);
                     state = 2;
                 }             
                 //esp_task_wdt_reset();
@@ -81,4 +69,3 @@ void wifi_sm_task( void){
         }
     }
 }
-
