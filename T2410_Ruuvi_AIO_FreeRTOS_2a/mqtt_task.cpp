@@ -71,6 +71,7 @@ void task_connect_mqtt( void *pvParameters )
                 {
                     main_ctrl.radio_is_available = false;
                     state = 10;
+                    digitalWrite(PIN_LED_YELLOW, HIGH);
                 }                  
                 vTaskDelay(1000);
                 break;
@@ -90,6 +91,7 @@ void task_connect_mqtt( void *pvParameters )
                         printf("%s\nRetrying MQTT connection…\n",mqtt.connectErrorString(ret));
                         mqtt.disconnect();
                         main_ctrl.radio_is_available = true;
+                        digitalWrite(PIN_LED_YELLOW, LOW);
                         state = 2;
                     }
                     else
@@ -145,6 +147,7 @@ void task_connect_mqtt( void *pvParameters )
             case 30:
                 mqtt.disconnect(); 
                 main_ctrl.radio_is_available = true;
+                digitalWrite(PIN_LED_YELLOW, LOW);
                 vTaskDelay(1000);
                 state = 2;
                 break;    

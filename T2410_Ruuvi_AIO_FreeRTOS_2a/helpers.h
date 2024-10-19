@@ -4,5 +4,6 @@
 
 uint16_t hexadecimalToDecimal(String hexVal);
 String u8_to_hex(uint8_t u8);
+void io_initialize(void);
 
 #endif

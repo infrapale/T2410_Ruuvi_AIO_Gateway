@@ -1,11 +1,11 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
-#define LED_YELLOW  13
 /// SSID Definitions
-//#define  VILLA_ASTRID
-//#define  H_MOKKULA
-#define PIRPANA
+//#define   VILLA_ASTRID
+//#define   H_MOKKULA
+//#define   PIRPANA
+#define   LILLA_ASTRID
 
 #define CAPTION_LEN               40      ///< Length of value name
 #define MAC_ADDR_LEN              18      ///< Length of the BLE MAC address string
@@ -19,6 +19,10 @@
 #define AIO_KEY         IO_KEY
 #define AIO_PUBLISH_INTERVAL_ms  60000
 
+#define PIN_LED_WHITE     33
+#define PIN_LED_YELLOW    25
+#define PIN_LED_BLUE      26 
+#define PIN_LED_RED       27
 
 typedef struct
 {

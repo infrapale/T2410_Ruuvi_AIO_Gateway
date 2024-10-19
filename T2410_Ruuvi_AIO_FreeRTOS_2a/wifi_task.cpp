@@ -31,13 +31,13 @@ void wifi_task_code( void *pvParameters ){
                 break;
             case 1:   // Check for the connection
                 if (WiFi.status() != WL_CONNECTED) {
-                    digitalWrite(LED_YELLOW,LOW);
+                    digitalWrite(PIN_LED_WHITE, LOW);
                     vTaskDelay(1000);
                     if (--retries == 0) state = 3;
                     else Serial.println("Waiting for WiFi"); 
                 }
                 else {
-                    digitalWrite(LED_YELLOW,HIGH);
+                    digitalWrite(PIN_LED_WHITE, HIGH);
                     Serial.println("Connected to WiFi");
                     main_ctrl.wifi_is_connected = true;
                     main_ctrl.radio_is_available = true;
@@ -53,6 +53,7 @@ void wifi_task_code( void *pvParameters ){
                 break;
             case 3:   // 
                 Serial.println("WiFi Retry limit reached -> WDT reset…");
+                digitalWrite(PIN_LED_RED, HIGH);
                 vTaskDelay(1000);  //        while (1); 
                 break;
         }

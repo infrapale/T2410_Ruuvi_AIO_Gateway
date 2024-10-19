@@ -1,6 +1,7 @@
 
 #include "Arduino.h"
 #include "String.h"
+#include "main.h"
 
 char u4hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 
@@ -35,4 +36,16 @@ String u8_to_hex(uint8_t u8)
     res = String(u4hex[u8 >> 4]);
     res = res + String(u4hex[u8 & 0x0F]);
     return res;
+}
+
+void io_initialize(void)
+{
+    pinMode(PIN_LED_WHITE, OUTPUT);
+    pinMode(PIN_LED_YELLOW, OUTPUT);
+    pinMode(PIN_LED_BLUE, OUTPUT);
+    pinMode(PIN_LED_RED, OUTPUT);
+    digitalWrite(PIN_LED_WHITE, LOW);
+    digitalWrite(PIN_LED_YELLOW, LOW);
+    digitalWrite(PIN_LED_BLUE, LOW);
+    digitalWrite(PIN_LED_RED, LOW);
 }

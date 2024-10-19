@@ -88,6 +88,7 @@ void ruuvi_scan_task( void *pvParameters)
                 if (main_ctrl.radio_is_available)
                 {
                     main_ctrl.radio_is_available = false; 
+                    digitalWrite(PIN_LED_BLUE, HIGH);
                     state = 30;
                 }
                 vTaskDelay(1000);
@@ -100,6 +101,7 @@ void ruuvi_scan_task( void *pvParameters)
                 state = 40;
                 break;
             case 40:
+                digitalWrite(PIN_LED_BLUE, LOW);
                 main_ctrl.radio_is_available = true;
                 vTaskDelay(10000);
                 state = 10;

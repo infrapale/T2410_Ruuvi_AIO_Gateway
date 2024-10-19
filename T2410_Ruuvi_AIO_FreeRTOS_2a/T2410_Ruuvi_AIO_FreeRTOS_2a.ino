@@ -30,6 +30,7 @@
 #include "ruuvi_tag.h"
 #include "ruuvi_ble.h"
 #include "mqtt_task.h"
+#include "helpers.h"
 
 
 TaskHandle_t TaskRuuviScan;
@@ -53,9 +54,7 @@ main_ctrl_st main_ctrl = {
 void setup() {
 
   Serial.begin(115200); 
-  pinMode(led_1, OUTPUT);
-  pinMode(led_2, OUTPUT);
-
+  io_initialize();
    
   xTaskCreatePinnedToCore(ruuvi_scan_task,"Scan",10000,NULL,1,&TaskRuuviScan,1);          
   delay(500); 
