@@ -23,14 +23,16 @@ Adafruit_MQTT_Publish ruuvi_ea_temp  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME 
 Adafruit_MQTT_Publish ruuvi_ea_rssi  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-ea-rssi");
 Adafruit_MQTT_Publish ruuvi_ea_bat   = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-ea-bat");
 Adafruit_MQTT_Publish ruuvi_ed_temp  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-ed-temp");
+Adafruit_MQTT_Publish ruuvi_f2_temp  = Adafruit_MQTT_Publish(&mqtt, IO_USERNAME "/feeds/villaastrid.ruuvi-f2-temp");
 
 ruuvi_publ_st ruuvi_publ[AIO_PUBL_NBR_OF ] =
 {
-    { &ruuvi_e6_temp, "e6:2c:8d:db:22:35", "Ruuvi E6 Temp", NULL, false, UNIT_TEMPERATURE, 60000,   0}, 
-    { &ruuvi_ea_temp, "ea:78:e2:12:36:f8", "Ruuvi EA Temp", NULL, false, UNIT_TEMPERATURE, 60000,   0}, 
-    { &ruuvi_ea_rssi, "ea:78:e2:12:36:f8", "Ruuvi EA RSSI", NULL, false, UNIT_RSSI,        300000,  0}, 
-    { &ruuvi_ea_bat,  "ea:78:e2:12:36:f8", "Ruuvi EA Bat ", NULL, false, UNIT_VOLTAGE,     60000,   0}, 
-    { &ruuvi_ed_temp, "ed:9a:ab:c6:30:72", "Ruuvi ED Temp", NULL, false, UNIT_TEMPERATURE, 60000,   0}, 
+    { &ruuvi_e6_temp, "e6:2c:8d:db:22:35", "Ruuvi E6 Temp", NULL, false, UNIT_TEMPERATURE, 600000,   0}, 
+    { &ruuvi_ea_temp, "ea:78:e2:12:36:f8", "Ruuvi EA Temp", NULL, false, UNIT_TEMPERATURE, 600000,   0}, 
+    { &ruuvi_ea_rssi, "ea:78:e2:12:36:f8", "Ruuvi EA RSSI", NULL, false, UNIT_RSSI,        3000000,  0}, 
+    { &ruuvi_ea_bat,  "ea:78:e2:12:36:f8", "Ruuvi EA Bat ", NULL, false, UNIT_VOLTAGE,     600000,   0}, 
+    { &ruuvi_ed_temp, "ed:9a:ab:c6:30:72", "Ruuvi ED Temp", NULL, false, UNIT_TEMPERATURE, 600000,   0}, 
+    { &ruuvi_f2_temp, "f2:5b:48:64:65:24", "Ruuvi F2 Temp", NULL, false, UNIT_TEMPERATURE, 600000,   0}, 
 };
 
 

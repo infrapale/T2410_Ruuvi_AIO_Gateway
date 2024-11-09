@@ -2,10 +2,10 @@
 #define __MAIN_H__
 
 /// SSID Definitions
-//#define   VILLA_ASTRID
+#define   VILLA_ASTRID
 //#define   H_MOKKULA
 //#define   PIRPANA
-#define   LILLA_ASTRID
+//#define   LILLA_ASTRID
 
 #define CAPTION_LEN               40      ///< Length of value name
 #define MAC_ADDR_LEN              18      ///< Length of the BLE MAC address string

@@ -5,7 +5,7 @@
 #include "main.h"
 #include "ruuvi_tag.h"
 
-#define AIO_PUBL_NBR_OF     5
+#define AIO_PUBL_NBR_OF     6
 
 typedef enum
 {
