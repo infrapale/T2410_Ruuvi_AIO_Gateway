@@ -44,8 +44,14 @@ void io_initialize(void)
     pinMode(PIN_LED_YELLOW, OUTPUT);
     pinMode(PIN_LED_BLUE, OUTPUT);
     pinMode(PIN_LED_RED, OUTPUT);
+    pinMode(PIN_WD_DISABLE, INPUT_PULLUP);
     digitalWrite(PIN_LED_WHITE, LOW);
     digitalWrite(PIN_LED_YELLOW, LOW);
     digitalWrite(PIN_LED_BLUE, LOW);
     digitalWrite(PIN_LED_RED, LOW);
+}
+
+bool io_wd_is_enabled(void)
+{
+    return (digitalRead(PIN_WD_DISABLE) == LOW);
 }

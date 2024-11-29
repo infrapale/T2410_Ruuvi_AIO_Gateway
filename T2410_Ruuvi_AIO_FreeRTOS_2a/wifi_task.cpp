@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include "main.h"
 #include "secrets.h"
+#include "supervisor.h"
 
 const char* ssid     = WIFI_SSID;            //Main Router      
 const char* password = WIFI_PASS;            //Main Router Password
@@ -48,6 +49,7 @@ void wifi_task_code( void *pvParameters ){
                 break;
             case 2:   // 
                 if (WiFi.status() != WL_CONNECTED) state = 0;
+                super_clr_task_cntr(SUPER_WIFI_INDX);
                 //esp_task_wdt_reset();
                 vTaskDelay(1000);
                 break;

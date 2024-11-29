@@ -5,6 +5,8 @@
 #include "Adafruit_MQTT_Client.h"
 #include "ruuvi_tag.h"
 #include "secrets.h"
+#include "supervisor.h"
+
 
 
 extern main_ctrl_st main_ctrl;
@@ -105,6 +107,7 @@ void task_connect_mqtt( void *pvParameters )
                 vTaskDelay(100);
                 break;    
             case 20:  // MQTT is connected
+                super_clr_task_cntr(SUPER_MQTT_INDX);   // Keep the the dog asleep
                 if (millis() >ruuvi_publ[sensor_indx].publ_next_ms)
                 {
                     ruuvi_publ[sensor_indx].publ_next_ms = millis() + ruuvi_publ[sensor_indx].publ_interval_ms;

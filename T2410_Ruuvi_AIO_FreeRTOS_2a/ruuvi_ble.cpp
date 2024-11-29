@@ -7,6 +7,8 @@
 #include "ruuvi_tag.h"
 #include "main.h"
 #include "helpers.h"
+#include "supervisor.h"
+
 
 extern main_ctrl_st main_ctrl;
 extern RuuviTag ruuvi_tag;
@@ -101,6 +103,7 @@ void ruuvi_scan_task( void *pvParameters)
                 state = 40;
                 break;
             case 40:
+                super_clr_task_cntr(SUPER_RUUVI_INDX);
                 digitalWrite(PIN_LED_BLUE, LOW);
                 main_ctrl.radio_is_available = true;
                 vTaskDelay(10000);

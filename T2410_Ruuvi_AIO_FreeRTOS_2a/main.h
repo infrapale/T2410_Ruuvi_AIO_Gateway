@@ -23,6 +23,7 @@
 #define PIN_LED_YELLOW    25
 #define PIN_LED_BLUE      26 
 #define PIN_LED_RED       27
+#define PIN_WD_DISABLE    24
 
 typedef struct
 {
