@@ -2,8 +2,8 @@
 #define __MAIN_H__
 
 /// SSID Definitions
-#define   VILLA_ASTRID
-//#define   H_MOKKULA
+//#define   VILLA_ASTRID
+#define   H_MOKKULA
 //#define   PIRPANA
 //#define   LILLA_ASTRID
 
@@ -23,7 +23,7 @@
 #define PIN_LED_YELLOW    25
 #define PIN_LED_BLUE      26 
 #define PIN_LED_RED       27
-#define PIN_WD_DISABLE    24
+#define PIN_WD_DISABLE    34    // external pullup
 
 typedef struct
 {

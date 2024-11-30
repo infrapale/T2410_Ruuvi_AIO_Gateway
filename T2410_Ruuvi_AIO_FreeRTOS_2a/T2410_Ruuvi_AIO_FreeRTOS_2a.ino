@@ -64,10 +64,10 @@ main_ctrl_st main_ctrl = {
 // } esp_task_wdt_config_t;
 
 
-const esp_task_wdt_config_t wdt_config = { 5000, 0x00000000, true};
+esp_task_wdt_config_t wdt_config = { 5000, 0x00000000, true};
 
 void setup() {
-
+  delay(2000);
   Serial.begin(115200); 
   io_initialize();
    
@@ -81,18 +81,21 @@ void setup() {
   delay(500); 
   printf("Free Heap: %d \n",xPortGetFreeHeapSize());
 
-   if (io_wd_is_enabled())
-    {
-      Serial.printf("Set WD timeout = %d seconds\n", WDT_TIMEOUT_SEC);
-      esp_task_wdt_init(&wdt_config); 
-      esp_task_wdt_add(NULL); //add current thread to WDT watch
-      esp_task_wdt_add(TaskSupervisor);
-    }
+  if (io_wd_is_enabled())
+  {
+    wdt_config.idle_core_mask = (1 << ESP.getChipCores()) - 1;
+    Serial.printf("Set WD timeout = %d seconds\n", WDT_TIMEOUT_SEC);
+    esp_task_wdt_init(&wdt_config); 
+    esp_task_wdt_add(NULL); //add current thread to WDT watch
+    esp_task_wdt_add(TaskSupervisor);
+  }
+  else Serial.printf("Running without Watchdog !!!\n");
+
 }
 
 void loop() 
 {
-  esp_task_wdt_reset();
+   if (io_wd_is_enabled()) esp_task_wdt_reset();
   vTaskDelay(1000);
 }
 
